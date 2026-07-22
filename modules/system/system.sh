@@ -1,44 +1,37 @@
 #!/bin/bash
 
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$DIR/../../lib/ui.sh"
+
 system_center() {
 
-echo
-echo "======================================"
-echo "         SYSTEM CENTER"
-echo "======================================"
-
 HOST=$(hostname)
-
 OS=$(grep PRETTY_NAME /etc/os-release | cut -d= -f2 | tr -d '"')
-
 KERNEL=$(uname -r)
-
 UPTIME=$(uptime -p)
-
 CPU=$(cut -d' ' -f1 /proc/loadavg)
-
 RAM_USED=$(free -h | awk 'NR==2 {print $3}')
 RAM_TOTAL=$(free -h | awk 'NR==2 {print $2}')
-
 DISK=$(df -h / | awk 'NR==2 {print $3 " / " $2}')
-
 DATE=$(date "+%d.%m.%Y %H:%M")
 
-printf "%-14s %s\n" "Hostname:" "$HOST"
-printf "%-14s %s\n" "OS:" "$OS"
-printf "%-14s %s\n" "Kernel:" "$KERNEL"
-printf "%-14s %s\n" "Uptime:" "$UPTIME"
+ui_title "SYSTEM CENTER"
+
+ui_item "Hostname:" "$HOST"
+ui_item "OS:" "$OS"
+ui_item "Kernel:" "$KERNEL"
+ui_item "Uptime:" "$UPTIME"
 
 echo
 
-printf "%-14s %s\n" "CPU Load:" "$CPU"
-printf "%-14s %s\n" "RAM:" "$RAM_USED / $RAM_TOTAL"
-printf "%-14s %s\n" "Root Disk:" "$DISK"
+ui_item "CPU Load:" "$CPU"
+ui_item "RAM:" "$RAM_USED / $RAM_TOTAL"
+ui_item "Root Disk:" "$DISK"
 
 echo
 
-printf "%-14s %s\n" "Date:" "$DATE"
+ui_item "Date:" "$DATE"
 
-echo "======================================"
+ui_footer
 
 }
