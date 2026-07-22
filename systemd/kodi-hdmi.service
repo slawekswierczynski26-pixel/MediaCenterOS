@@ -1,0 +1,14 @@
+[Unit]
+Description=MediaCenterOS Kodi HDMI
+After=graphical.target
+
+[Service]
+User=slawek
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/slawek/.Xauthority
+ExecStart=/usr/bin/kodi --standalone
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=graphical.target
