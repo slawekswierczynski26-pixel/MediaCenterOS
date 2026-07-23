@@ -1,28 +1,39 @@
 #!/bin/bash
 
+MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$MODULE_DIR/../../lib/ui.sh"
+
 network_center() {
 
-echo
-echo "======================================"
-echo "        NETWORK CENTER"
-echo "======================================"
-
 HOSTNAME=$(hostname)
-
 IP=$(hostname -I | awk '{print $1}')
-
 GATEWAY=$(ip route | awk '/default/ {print $3}')
-
 DNS=$(awk '/nameserver/ {print $2; exit}' /etc/resolv.conf)
 
-PING=$(ping -c1 -W1 1.1.1.1 >/dev/null 2>&1 && echo "ONLINE" || echo "OFFLINE")
+if ping -c1 -W1 1.1.1.1 >/dev/null 2>&1
+then
+    INTERNET="ONLINE"
+else
+    INTERNET="OFFLINE"
+fi
 
-printf "%-14s %s\n" "Hostname:" "$HOSTNAME"
-printf "%-14s %s\n" "IP Address:" "$IP"
-printf "%-14s %s\n" "Gateway:" "$GATEWAY"
-printf "%-14s %s\n" "DNS:" "$DNS"
-printf "%-14s %s\n" "Internet:" "$PING"
+ui_header
+ui_title "SIEĆ"
 
-echo "======================================"
+ui_info "Hostname:" "$HOSTNAME"
+ui_info "Adres IP:" "$IP"
+ui_info "Brama:" "$GATEWAY"
+ui_info "DNS:" "$DNS"
+
+echo
+
+if [ "$INTERNET" = "ONLINE" ]
+then
+    ui_ok "Połączenie z Internetem"
+else
+    ui_error "Brak połączenia z Internetem"
+fi
+
+ui_footer
 
 }

@@ -1,12 +1,19 @@
 #!/bin/bash
 
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-source "$BASE_DIR/modules/system/system.sh"
-source "$BASE_DIR/modules/network/network.sh"
-source "$BASE_DIR/modules/storage/storage.sh"
-source "$BASE_DIR/modules/media/media.sh"
-source "$BASE_DIR/modules/audio/audio.sh"
+source "$DIR/modules/system/system.sh"
+source "$DIR/modules/network/network.sh"
+source "$DIR/modules/storage/storage.sh"
+source "$DIR/modules/media/media.sh"
+source "$DIR/modules/audio/audio.sh"
+
+echo "=== TEST ==="
+declare -F system_center
+declare -F network_center
+declare -F storage_center
+declare -F media_center
+declare -F audio_center
 
 while true
 do
@@ -59,7 +66,7 @@ do
 
         g|G)
             clear
-            git -C "$BASE_DIR" status
+            git -C "$DIR" status
             echo
             read -rp "Naciśnij ENTER..." _
             ;;
